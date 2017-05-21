@@ -1,0 +1,2 @@
+# mezmur
+Proxy for wongelnet 
