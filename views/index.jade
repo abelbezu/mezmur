@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  script.
+    var count = 0;
+  .container
+    .col-md-2
+    .col-md-8
+      h2 Mezmur
+      table.table
+        thead
+          tr
+            th Title
+            th Artist
+            th Play
+        tbody
+          for album in albums
+            a(href = "/album/album.albumId")
+              tr
+                td 
+                  b #{album.artistName}
+                td #{album.albumName}
+                td 
+                  a(href = "/album/#{album.albumId}") Play
+    .col-md-2
+

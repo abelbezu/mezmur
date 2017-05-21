@@ -1,0 +1,60 @@
+extends layout
+
+block content
+  script.
+
+  .container
+
+    .col-md-2.col-sm-0.col-xs-0
+    .col-md-8.col-sm-12.col-xs-12
+      a(href="/") Home
+      h2 #{album.albumName}
+      h4 #{album.artistName}
+      .player-container
+        audio(controls='')
+          source(src='', type='audio/mpeg')
+          | Your browser does not support the audio element.
+      table.table
+        thead
+          tr
+            th Track
+            th Title
+        tbody
+          for track in album.Tracks
+            tr.player_button(data-id = '#{track.trackId}')
+              td #{track.trackName}
+              td 
+                a(href = "")
+                | Play
+      
+    .col-md-2.col-sm-0.col-xs-0
+
+  script.
+    var trackCount, currentTrack;     
+    var trackId = '#{firstTrackId}'; 
+    var audio = $('audio')[0];
+    function playTrack(trackContainer, trackId){
+        console.log("current playing ... ", trackId)
+        $('.active').removeClass('active');
+        $(trackContainer).addClass('active');
+        url = "http://www.wongelnet.com/_mp3_/"+trackId+".mp3";    
+        audio.src = url;
+        audio.play();
+    }
+    
+    // play the first track on load
+    var $playerButton = $('.player_button');  
+    trackCount = $playerButton.length;  
+    currentTrack = 0;
+    playTrack($playerButton[0], trackId);
+
+    $playerButton.click(function(){  
+      var trackId = $(this).attr('data-id');
+      playTrack(this, trackId)
+    });
+    //play the next track on end.
+    audio.onended = function() {
+        currentTrack = (currentTrack + 1) % trackCount;
+        playTrack($playerButton[currentTrack], parseInt(trackId) + currentTrack);
+    };
+
